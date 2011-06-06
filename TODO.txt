@@ -1,0 +1,13 @@
+Use ActiveRecord to store links visited and words on a simple database
+
+Expected schema:
+
+Links (
+  title : string,
+  target : string
+)
+
+Words (
+  word : string,
+  count : integer
+)
