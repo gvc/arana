@@ -15,11 +15,12 @@ module Arana
     def obtain_links
       open("#{url}/global") do |f|
         doc = Nokogiri::XML(f)
-        headlines = doc.css('h2.t-xl a')
+        headlines = doc.css('h2.t-xl a, h2.t-l a')
         
         links = []
         headlines.each do |anchor|
-          links << Link.new(anchor[:title], "#{url}#{anchor[:href]}?print=1")
+          target = anchor[:href].starts_with?('/') ? "#{url}#{anchor[:href]}?print=1" : "#{anchor[:href]}?print=1"
+          links << Arana::Link.new(title: anchor[:title], target: target)
         end
         
         links
