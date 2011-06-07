@@ -12,15 +12,23 @@ module Arana
   
   def self.crawl
     configure!
-    count = 0
-    Arana::Crawler.new.links.each do |link|
-      unless Arana::Link.find_by_title(link.title)
-        link.visit
-        link.save!
-        count += 1
-        exit(0) if count == 2
-      end
+    puts 'Crawling for news on elpais.com'
+    links = Arana::Crawler.new.links.select { |l| Arana::Link.find_by_title(l.title).nil? }
+    
+    if links.empty?
+      puts 'Nothing new on Spain!'
+    else
+      puts "-" * links.size
     end
+    
+    links.each do |link|
+      link.visit
+      link.save!
+
+      print "+"
+    end
+    
+    puts '' if links.any?
   end
   
   private

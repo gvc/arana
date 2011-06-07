@@ -14,7 +14,7 @@ module Arana
       open(self.target) do |f|
         doc = Nokogiri::XML(f)
         words = treat_text(doc.css('p').map { |a| a.content })
-        p words
+
         words.each_pair do |term, count|
           Arana::Word.create_or_update_word(term, count)
         end
